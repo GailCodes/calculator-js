@@ -35,14 +35,16 @@ body {
 }
 
 #operation-display {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-
   font-size: 50px;
 
   background-color: var(--display-color);
   height: 140px;
+  width: 100%;
+
+  overflow-y: scroll;
+
+  word-wrap: break-word;
+  hyphens: none;
 
   padding: 0.5rem;
 }
