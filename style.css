@@ -1,0 +1,101 @@
+:root {
+  --display-color: #222;
+  --symbols-color: #a39a9a;
+  --symbols-hover-color: #797272;
+  --numbers-color: #d8dbe0;
+  --numbers-hover-color: #b2b5b9;
+  --equals-color: #ffa500;
+  --equals-hover-color: #e29a13;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Courier New", Courier, monospace;
+
+  color: #fff;
+  background-color: #969191;
+  height: 100vh;
+}
+
+/* Calculator styling */
+#calculator {
+  width: 400px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#operation-display {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+
+  font-size: 50px;
+
+  background-color: var(--display-color);
+  height: 140px;
+
+  padding: 0.5rem;
+}
+
+/* Buttons */
+button {
+  font-size: 20px;
+  font-weight: 600;
+
+  height: 80px;
+  border: none;
+
+  cursor: pointer;
+}
+
+#top-row button {
+  background-color: var(--symbols-color);
+}
+
+#top-row > button:hover {
+  background-color: var(--symbols-hover-color);
+}
+
+#bottom-row > #main-grid > button {
+  background-color: var(--numbers-color);
+}
+
+#bottom-row > #main-grid > button:hover {
+  background-color: var(--numbers-hover-color);
+}
+
+#equals {
+  background-color: var(--equals-color);
+  height: 100%;
+}
+
+#equals:hover {
+  background-color: var(--equals-hover-color);
+  height: 100%;
+}
+
+/* Sections */
+#top-row,
+#bottom-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+#bottom-row > #main-grid {
+  grid-column: span 3;
+}
+
+#bottom-row > #main-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
