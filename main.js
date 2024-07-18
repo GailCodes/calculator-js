@@ -33,7 +33,7 @@ const calculatorSymbols = [
     },
 ];
 
-const currentOperation = [];
+let currentOperation = [];
 let currentDisplayText = '';
 
 ELEMENT_Buttons.forEach((ELEMENT_Button, index) => {
@@ -73,6 +73,13 @@ ELEMENT_Equals.addEventListener('click', () => {
         const operationResult = calculateArrayAsMath(currentOperation);
         console.log(operationResult);
     }
+});
+
+// Clear the current operation
+ELEMENT_Clear.addEventListener('click', () => {
+    currentOperation = [];
+    currentDisplayText = '';
+    ELEMENT_Display.textContent = 0;
 });
 
 // Every time a button is pressed, we need to show it on the display
