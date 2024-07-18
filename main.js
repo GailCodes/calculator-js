@@ -42,12 +42,13 @@ ELEMENT_Buttons.forEach((ELEMENT_Button, index) => {
         let selectedSymbolOrNumber;
 
         // Check to see if the button you clicked on is a symbol or a number
-        // Also, don't allow sequential symbols like: +*
+        // Also, don't allow sequential symbols like: +-
         if (
             ELEMENT_Button.classList.contains('symbol') &&
             !calculatorSymbols.find(
                 (symbol) => symbol.mathSymbol == currentOperation[currentOperation.length - 1],
-            )
+            ) &&
+            currentOperation.length >= 1
         ) {
             // Match the clicked symbol with the calculatorSymbols objects to find the correct mathematical symbol
             selectedSymbolOrNumber = calculatorSymbols.find(
