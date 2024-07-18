@@ -54,7 +54,7 @@ ELEMENT_Buttons.forEach((ELEMENT_Button, index) => {
                 (symbol) => symbol.name == ELEMENT_Button.id,
             ).mathSymbol;
 
-            // If an ineteger then convert the buttons text string into a integer
+            // If an number then convert the buttons text string into a integer
         } else if (ELEMENT_Button.classList.contains('number')) {
             selectedSymbolOrNumber = parseInt(ELEMENT_Button.textContent);
         }
