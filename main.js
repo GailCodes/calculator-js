@@ -1,7 +1,8 @@
+const ELEMENT_Display = document.getElementById('operation-display');
+const ELEMENT_Result = document.getElementById('result-display');
 const ELEMENT_Symbols = document.querySelectorAll('.symbol');
 const ELEMENT_Numbers = document.querySelectorAll('.number');
 const ELEMENT_Buttons = document.querySelectorAll('button');
-const ELEMENT_Display = document.getElementById('operation-display');
 const ELEMENT_Equals = document.querySelector('.equals');
 const ELEMENT_Clear = document.querySelector('.clear');
 
@@ -69,17 +70,20 @@ ELEMENT_Buttons.forEach((ELEMENT_Button, index) => {
 
 // Calculate the operation when pressing the equals button
 ELEMENT_Equals.addEventListener('click', () => {
-    if (currentOperation.length > 1) {
-        const operationResult = calculateArrayAsMath(currentOperation);
-        console.log(operationResult);
-    }
+    const operationResult = calculateArrayAsMath(currentOperation);
+
+    ELEMENT_Result.textContent = `${operationResult}`;
+    ELEMENT_Result.style.display = 'block';
 });
 
-// Clear the current operation
+// Clear the current operation and reset everything
 ELEMENT_Clear.addEventListener('click', () => {
     currentOperation = [];
     currentDisplayText = '';
+
     ELEMENT_Display.textContent = 0;
+    ELEMENT_Result.textContent = '';
+    ELEMENT_Result.style.display = 'none';
 });
 
 // Every time a button is pressed, we need to show it on the display
