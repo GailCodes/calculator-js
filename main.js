@@ -66,15 +66,7 @@ ELEMENT_Buttons.forEach((ELEMENT_Button) => {
 });
 
 ELEMENT_Equals.addEventListener('click', calculateResult);
-
-ELEMENT_Clear.addEventListener('click', () => {
-    currentOperation = [];
-    currentDisplayText = '';
-
-    ELEMENT_Display.textContent = 0;
-    ELEMENT_Result.textContent = '';
-    ELEMENT_Result.style.display = 'none';
-});
+ELEMENT_Clear.addEventListener('click', clearInput);
 
 function updateDisplay() {
     let numberOrSymbolToAdd;
@@ -124,6 +116,15 @@ function calculateResult() {
         ELEMENT_Result.textContent = `${operationResult}`;
         ELEMENT_Result.style.display = 'block';
     }
+}
+
+function clearInput() {
+    currentOperation = [];
+    currentDisplayText = '';
+
+    ELEMENT_Display.textContent = 0;
+    ELEMENT_Result.textContent = '';
+    ELEMENT_Result.style.display = 'none';
 }
 
 // Numpad support
