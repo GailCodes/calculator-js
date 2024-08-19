@@ -37,31 +37,27 @@ const calculatorSymbols = [
 let currentOperation = [];
 let currentDisplayText = '';
 
-ELEMENT_Buttons.forEach((ELEMENT_Button, index) => {
+function isLastOperationSymbol() {
+    return calculatorSymbols.some(
+        (symbol) => symbol.mathSymbol === currentOperation[currentOperation.length - 1],
+    );
+}
+
+ELEMENT_Buttons.forEach((ELEMENT_Button) => {
     ELEMENT_Button.addEventListener('click', () => {
         let selectedSymbolOrNumber;
 
-        // Check to see if the button you clicked on is a symbol or a number
-        // Also, don't allow sequential symbols like: +-
-        if (
-            ELEMENT_Button.classList.contains('symbol') &&
-            !calculatorSymbols.find(
-                (symbol) => symbol.mathSymbol == currentOperation[currentOperation.length - 1],
-            ) &&
-            currentOperation.length >= 1
-        ) {
-            // Match the clicked symbol with the calculatorSymbols objects to find the correct mathematical symbol
+        if (ELEMENT_Button.classList.contains('symbol')) {
+            // Prevent adding another symbol if the last operation is already a symbol
+            if (isLastOperationSymbol()) return;
+
             selectedSymbolOrNumber = calculatorSymbols.find(
                 (symbol) => symbol.name == ELEMENT_Button.id,
             ).mathSymbol;
-
-            // If an number then convert the buttons text string into a integer
         } else if (ELEMENT_Button.classList.contains('number')) {
             selectedSymbolOrNumber = parseInt(ELEMENT_Button.textContent);
         }
 
-        // Only add a number or symbol to the current operation if it exists
-        // Check for undefined because the number can be 0
         if (selectedSymbolOrNumber != undefined) {
             currentOperation.push(selectedSymbolOrNumber);
             updateDisplay();
@@ -69,15 +65,8 @@ ELEMENT_Buttons.forEach((ELEMENT_Button, index) => {
     });
 });
 
-// Calculate the operation when pressing the equals button
-ELEMENT_Equals.addEventListener('click', () => {
-    const operationResult = calculateArrayAsMath(currentOperation);
+ELEMENT_Equals.addEventListener('click', calculateResult);
 
-    ELEMENT_Result.textContent = `${operationResult}`;
-    ELEMENT_Result.style.display = 'block';
-});
-
-// Clear the current operation and reset everything
 ELEMENT_Clear.addEventListener('click', () => {
     currentOperation = [];
     currentDisplayText = '';
@@ -87,12 +76,9 @@ ELEMENT_Clear.addEventListener('click', () => {
     ELEMENT_Result.style.display = 'none';
 });
 
-// Every time a button is pressed, we need to show it on the display
 function updateDisplay() {
     let numberOrSymbolToAdd;
 
-    // Show the symbol the same as the one on the calculator button
-    // * is instead x, etc..
     const prettySymbol = calculatorSymbols.find(
         (symbol) => symbol.mathSymbol == currentOperation[currentOperation.length - 1],
     )?.prettySymbol;
@@ -109,12 +95,10 @@ function updateDisplay() {
     adjustFontSize();
 }
 
-// When the operation display fills up with numbers and symbols we need to decrease the size of the text
 function adjustFontSize() {
     const displayHeight = ELEMENT_Display.clientHeight;
     const contentHeight = ELEMENT_Display.scrollHeight;
 
-    // Check if content overflows the container
     if (contentHeight > displayHeight) {
         let fontSize = parseInt(window.getComputedStyle(ELEMENT_Display).fontSize);
         fontSize -= 3;
@@ -123,7 +107,6 @@ function adjustFontSize() {
     }
 }
 
-// Convert string like "&#43;" into actual symbols like +
 function decodeHTMLCodes(encodedString) {
     const textarea = document.createElement('textarea');
     textarea.innerHTML = encodedString;
@@ -134,3 +117,35 @@ function calculateArrayAsMath(operationArray) {
     const expression = operationArray.join('');
     return eval(expression);
 }
+
+function calculateResult() {
+    if (currentOperation.length >= 1) {
+        const operationResult = calculateArrayAsMath(currentOperation);
+        ELEMENT_Result.textContent = `${operationResult}`;
+        ELEMENT_Result.style.display = 'block';
+    }
+}
+
+// Numpad support
+window.addEventListener('keydown', (event) => {
+    const key = event.key;
+    let selectedSymbolOrNumber;
+
+    if (key >= '0' && key <= '9') {
+        selectedSymbolOrNumber = parseInt(key);
+    } else if (key == '=') {
+        calculateResult();
+    } else {
+        if (isLastOperationSymbol()) {
+            return;
+        }
+        selectedSymbolOrNumber = calculatorSymbols.find(
+            (symbol) => symbol.mathSymbol === key,
+        ).mathSymbol;
+    }
+
+    if (selectedSymbolOrNumber != undefined) {
+        currentOperation.push(selectedSymbolOrNumber);
+        updateDisplay();
+    }
+});
