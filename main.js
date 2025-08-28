@@ -134,7 +134,7 @@ window.addEventListener('keydown', (event) => {
 
     if (key >= '0' && key <= '9') {
         selectedSymbolOrNumber = parseInt(key);
-    } else if (key == '=') {
+    } else if (key == '=' || key == "Enter") {
         calculateResult();
     } else {
         if (isLastOperationSymbol()) {
