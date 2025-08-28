@@ -132,18 +132,37 @@ window.addEventListener('keydown', (event) => {
     const key = event.key;
     let selectedSymbolOrNumber;
 
-    if (key >= '0' && key <= '9') {
-        selectedSymbolOrNumber = parseInt(key);
-    } else if (key == '=' || key == "Enter") {
+    // Prevent form submission when Enter is pressed
+    if (key === 'Enter') {
         event.preventDefault();
         calculateResult();
+        return;
+    }
+
+    // Prevent default for all keys we're handling to avoid any other dumb behaviour
+    if (key >= '0' && key <= '9' || key === '.' || key === '=' || 
+        key === '+' || key === '-' || key === '*' || key === '/') {
+        event.preventDefault();
+    }
+
+    if (key >= '0' && key <= '9') {
+        selectedSymbolOrNumber = parseInt(key);
+    } else if (key === '.') {
+        // Add logic to prevent multiple decimals in a single number
+        selectedSymbolOrNumber = '.';
+    } else if (key == '=') {
+        calculateResult();
+        return;
     } else {
         if (isLastOperationSymbol()) {
             return;
         }
-        selectedSymbolOrNumber = calculatorSymbols.find(
-            (symbol) => symbol.mathSymbol === key,
-        ).mathSymbol;
+        const symbol = calculatorSymbols.find(
+            (symbol) => symbol.mathSymbol === key
+        );
+        if (symbol) {
+            selectedSymbolOrNumber = symbol.mathSymbol;
+        }
     }
 
     if (selectedSymbolOrNumber != undefined) {
